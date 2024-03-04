@@ -26,7 +26,22 @@ if(empty($_GET["id"])){
             On cherche l'exercice dont l'id est égal à ce qui est transmis dans l'url
             Si l'exercice existe, on l'affiche
         */
-    
+         // se connecter à la base de données
+         require_once "connect.php";
+         // Faire une requête pour récupérer TOUS les exercices
+         $requete = "SELECT id_exercice, langue_exercice, titre_exercice, enonce_exercice FROM exercices WHERE id_exercice = :id";
+         $datas = $db->prepare($requete);
+         $datas->execute(array(
+            "id" => $_GET["id"]
+         ));
+         $data = $datas->fetch();
+         // Afficher le contenu de l'exercice
+         echo "<main>";
+         echo "<h2>".$data["titre_exercice"]." - ".$data["langue_exercice"]."</h2>";
+         echo "<p>".$data["enonce_exercice"]."</p>";
+         echo "</main>";
+        
+         // exercices(id_exercice, titre_exercice, enonce_exercice, solution_exercice, langue_exercice)
     ?>
 </body>
 </html>
